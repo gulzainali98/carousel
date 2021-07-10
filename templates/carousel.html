@@ -1,0 +1,42 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+	<style>
+		body { background: #e8f1f9; }
+	</style>
+{% endblock %}
+
+
+{% block title %}
+Best Movie Actors
+{% endblock %}
+
+
+{% block content %}
+<p>hello world</p>
+{% for im in images  %}
+<p>"kjk"</p>
+<p> "{{ruta}}"</p>
+{% endfor %}
+<p> "{{images}}" </p>
+<!-- <link rel="stylesheet" type="text/css" href="css/bootstrap.css"> -->
+  <!-- <header> -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+	<div class="carousel-inner">
+	    {% for im in images  %}
+	    <div class="carousel-item ">
+	            {% if _ == 0 %}active{% endif %}
+	        <img src="{{ im }}" class="d-block w-100" alt="...">
+	    </div>
+	    {% endfor %}
+	</div>
+</div>
+
+{% for im in images  %}
+<img src="{{ im }}" class="d-block w-100" alt="...">
+{% endfor %}
+  <!-- </header> -->
+<script src="js/bootstrap.min.js"></script>
+{% endblock %}
