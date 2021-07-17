@@ -102,7 +102,7 @@ def carousel(url):
     print(images)
     for im in images:
         # return_images.append("/static/imgs/"+im.split("\\")[-1])
-        return_images.append("/"+dir+"/"+im.split("\\")[-1])
+        return_images.append(dir+"/"+im.split("\\")[-1])
     # return_images.append(url)
     # images=glob.glob("static/imgs/*")
 
