@@ -3,8 +3,8 @@ import os
 import shutil
 import math
 import datetime
+#jsjdjdak
 # plots
-import matplotlib.pyplot as plt
 # image operation
 import cv2
 class FrameExtractor():
