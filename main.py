@@ -94,6 +94,7 @@ def carousel(url):
                   dest_path='static/'+clear_title)
     # dir = os.path.join('static/', yt.title)
     dir="static/"+clear_title
+    dir_im=s.path.join(app.static_folder, clear_title)
     print(dir)
     # hj()
     # dir="static/imgs/"
@@ -102,7 +103,7 @@ def carousel(url):
     print(images)
     for im in images:
         # return_images.append("/static/imgs/"+im.split("\\")[-1])
-        return_images.append(dir+"/"+im.split("\\")[-1])
+        return_images.append(dir_im+im.split("\\")[-1])
     # return_images.append(url)
     # images=glob.glob("static/imgs/*")
 
