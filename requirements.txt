@@ -3,3 +3,4 @@ gunicorn
 Flask-Bootstrap
 Flask-WTF
 pytube==10.8.5
+opencv-python

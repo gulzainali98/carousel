@@ -64,7 +64,6 @@ def carousel(url):
     import math
     import datetime
     # plots
-    import matplotlib.pyplot as plt
     from frame_extractor import FrameExtractor
     # image operation
     import cv2
