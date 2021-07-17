@@ -35,34 +35,78 @@ def index():
     message = ""
     if form.validate_on_submit():
         name = form.name.data
-        if name.lower() in names:
-            # empty the form field
-            form.name.data = ""
-            id = get_id(ACTORS, name)
-            # redirect the browser to another route and template
-            # print(url_for('actor', id=id) )
-            # hj()
-            return redirect("/carousel/")
-        else:
-            message = "That actor is not in our database."
+
+        return redirect("/carousel/"+str(name.split("/")[-1]).replace("?","*@").replace("=","^()"))
     return render_template('index.html', names=names, form=form, message=message)
 
+import re
 
+def atoi(text):
+    return int(text) if text.isdigit() else text
 
-@app.route('/carousel/',methods=['GET','POST'])
-def carousel():
+def natural_keys(text):
+    '''
+    alist.sort(key=natural_keys) sorts in human order
+    http://nedbatchelder.com/blog/200712/human_sorting.html
+    (See Toothy's implementation in the comments)
+    '''
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
+
+@app.route('/carousel/<url>',methods=['GET','POST'])
+def carousel(url):
     import os
     import shutil
     import glob
-    dir = os.path.join(app.static_folder, "imgs")
-    # print(dir)
-    # if os.path.exists(dir):
-    #     shutil.rmtree(dir)
-    # os.makedirs(dir)
-    # ruta_imagenes = glob.glob("./*.jpg")
+    from pytube import YouTube
+    # misc
+    import os
+    import shutil
+    import math
+    import datetime
+    # plots
+    import matplotlib.pyplot as plt
+    from frame_extractor import FrameExtractor
+    # image operation
+    import cv2
+    print(url)
+    # url=url.replace("*-*!","/")
+    if "watch" in url:
+        new_url=url.replace("*@","?").replace("^()","=")
+        new_url="https://www.youtube.com/"+new_url
+    else:
+        new_url="https://www.youtu.be/"+url
+    url=new_url
+    print(url)
+
+
+    return_images=[]
+    #
+    yt = YouTube(url)
+    yt.streams.filter(progressive=True).order_by('resolution')[-1].download("static/videos/")
+    name_video=yt.title+"."+yt.streams.filter(progressive=True).order_by('resolution')[-1].mime_type.split("/")[-1]
+    fe= FrameExtractor("static/videos/"+name_video)
+    fps=fe.fps
+    title=yt.title
+    clear_title=''.join(e for e in yt.title if e.isalnum())
+    fe.get_n_images(every_x_frame=fps*2)
+    # finding output directory
+    fe.extract_frames(every_x_frame=fps*2,
+                  img_name='a_',
+                  dest_path='static/'+clear_title)
+    # dir = os.path.join('static/', yt.title)
+    dir="static/"+clear_title
+    print(dir)
+    # hj()
+    # dir="static/imgs/"
     images=glob.glob(dir+"/*")
+    images.sort(key=natural_keys)
+    print(images)
+    for im in images:
+        # return_images.append("/static/imgs/"+im.split("\\")[-1])
+        return_images.append("/"+dir+"/"+im.split("\\")[-1])
+    # return_images.append(url)
     # images=glob.glob("static/imgs/*")
 
     # images=['./ugSeauWEAEDVpx.jpg', './dice.jpg', './random.jpg']
-    print(images)
-    return render_template('carousel.html',images=images)
+    print(return_images)
+    return render_template('carousel.html',images=return_images)
